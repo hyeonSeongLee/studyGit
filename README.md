@@ -135,3 +135,16 @@ $ git merge (작업한 브랜치 명)
 윈도우에서 폴더의 파일 확장자 명은 존재하지 않는다.
 
 따라서 폴더를 커밋 / push 하고 싶을 땐, 그냥 폴더 명을 "" 안에 넣으면 통으로 반영된다.
+
+git commit 오류. 커밋을 하고 (혹은 하는 도중에) 닫아버렸더니 커밋 파일이 남아 아래와 같은 오류가 생겼다.
+```
+$ git add 'html 실습'
+fatal: Unable to create 'C:/Users/a0109/OneDrive/문서/studyCode/studyHtml/.git/index.lock': File exists.
+
+Another git process seems to be running in this repository, e.g. an editor opened by 'git commit'. Please make sure all processes are terminated then try again. If it still fails, a git process may have crashed in this repository earlier: remove the file manually to continue.
+```
+문제는 이미 index.lock 파일이 존재하기에 만들 수가 없다는 것이고, 아마도 git 커밋으로 인해 열린 편집기로 git 프로세스가 레포지토리 안에서 종료되지 않고 작동 중이니 프로세스들의 작동을 종료하고 다시하라는 것 / 그래도 안되면 깃이 crashed 되었으니 파일을 수동으로 삭제하라..는 뜻 
+```
+rm -f ./.git/index.lock
+```
+이는 위의 코드를 입력해서 해결하였다. 우선 rm 은 remove 의 약자. -f 는 업데이트 체크를 override 즉 무시하는 의미가 있다고 한다. 중요한 점은 이미 존재해 충돌이 일어난 index.lock을 지웠다는 점. 이후엔 그대로 git add 를 통해 폴더를 다시 추가하고, 커밋 푸시를 진행하여 무사히 레포지토리에 반영했다.
